@@ -40,14 +40,11 @@ def ECdouble(a): # Point doubling,invented for EC
     y = (Lam*(a[0]-x)-a[1]) % Pcurve
     return (x,y)
 
-def EccMultiply(GenPoint,ScalarHex): #Double & add. Not true multiplication
-    
+def EccMultiply(GenPoint,ScalarHex): #Double & add. Not true multiplication 
     if ScalarHex == 0 or ScalarHex >= N: 
 	raise Exception("Invalid Scalar/Private Key")
-
     ScalarBin = str(bin(ScalarHex))[2:]
     Q=GenPoint
-
     for i in range (1, len(ScalarBin)): #  EC multiplication.
         Q=ECdouble(Q)
         if ScalarBin[i] == "1":
@@ -57,7 +54,6 @@ def EccMultiply(GenPoint,ScalarHex): #Double & add. Not true multiplication
 privKey = random.getrandbits(256)    
 
 def gen_pubKey():
-
     #print("******* Public Key Generation *********")
     PublicKey = EccMultiply(GPoint, privKey)
 
@@ -67,18 +63,14 @@ def gen_pubKey():
 message = raw_input("Enter Message to be encrypted > ")
 
 def encryption(Public_Key, msg):
-     
      C1 = EccMultiply(GPoint, k)
      C2 = EccMultiply(Public_Key, k)[0] + int(msg)
-
      return (C1, C2)
 
 decrypted_string = ''
 
-def decryption(C1, C2, private_Key):
-    
+def decryption(C1, C2, private_Key):  
      solution = C2-EccMultiply(C1, private_Key)[0]
-
      return (solution)
 
 (C1,C2) = encryption(gen_pubKey(), Hash.encode(message))
