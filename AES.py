@@ -11,19 +11,15 @@ class AES:
         for i in range(4, 4 * 11):
             self.roundKey.append([])
             if i % 4 == 0:
-                newKey = self.roundKey[i - 4][0]        \
-                     ^ AES_helper.Sbox[self.roundKey[i - 1][1]]  \
-                     ^ AES_helper.Rcon[i // 4]
+                newKey = self.roundKey[i - 4][0] ^ AES_helper.Sbox[self.roundKey[i - 1][1]] ^ AES_helper.Rcon[i // 4]
                 self.roundKey[i].append(newKey)
 
                 for j in range(1, 4):
-                    newKey = self.roundKey[i - 4][j]    \
-                         ^ AES_helper.Sbox[self.roundKey[i - 1][(j + 1) % 4]]
+                    newKey = self.roundKey[i - 4][j] ^ AES_helper.Sbox[self.roundKey[i - 1][(j + 1) % 4]]
                     self.roundKey[i].append(newKey)
             else:
                 for j in range(4):
-                    newKey = self.roundKey[i - 4][j]    \
-                         ^ self.roundKey[i - 1][j]
+                    newKey = self.roundKey[i - 4][j] ^ self.roundKey[i - 1][j]
                     self.roundKey[i].append(newKey)
 
 
@@ -33,9 +29,9 @@ class AES:
         self.addRoundKey(self.plainState, self.roundKey[:4])
 
         for i in range(1, 10):           
-            self.substituteBytes(self.plainState)
-            self.rowShifter(self.plainState)
-            self.columnMixer(self.plainState)
+            self.substituteBytes(self.plainState)                           #sub bytes
+            self.rowShifter(self.plainState)                                #shift rows
+            self.columnMixer(self.plainState)                               #mix column    
             self.addRoundKey(self.plainState, self.roundKey[4 * i : 4 * (i + 1)])
 
         self.substituteBytes(self.plainState)
@@ -111,6 +107,7 @@ class AES:
 
         self.columnMixer(state)
 
+# referred from https://en.wikipedia.org/wiki/Rijndael_MixColumns
 def mixFactor(x):
     return (((x << 1) ^ 27) & 255) if (x & 128) else (x << 1)
 

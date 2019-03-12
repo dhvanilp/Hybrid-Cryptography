@@ -25,6 +25,8 @@ def decode(encAscii_string):
 		i=i+3
 	return decodedString;	
 
+#formulae referred on https://hackernoon.com/elliptic-curve-crypto-addition-42f6cb9916d7
+
 def modInverse(a,n=P): 
     lowM = 1
     highM = 0
@@ -49,45 +51,47 @@ def ecTwoFold(a):
     y = (Lam*(a[0]-x)-a[1]) % P
     return(x, y)
 
-def eccDot(generatedPoint,randomK): #Double & add. Not true multiplication
-    randomKBin = str(bin(randomK))[2:]
+def eccDot(generatedPoint,constK): #Double & add. Not true multiplication
+    constKBin = str(bin(constK))[2:]
     Q=generatedPoint
-
-    for i in range (1, len(randomKBin)): #  EC multiplication.
+    
+    # this is a optimised implementaion for faster multiplication
+    for i in range (1, len(constKBin)): #  EC multiplication.
         Q=ecTwoFold(Q)
-        if randomKBin[i] == "1":
+        if constKBin[i] == "1":
             Q=eccAddition(Q,generatedPoint)
     return (Q)
 
-privKey = random.getrandbits(256)    
 
-def gen_pubKey():
+def gen_pubKey(privKey):
     #print("******* Public Key Generation *********")
     PublicKey = eccDot(GP, privKey)
     return PublicKey
 
-message = raw_input("Enter Message to be encrypted > ")
 
 def encryption(Public_Key, msg):
-     
      C1 = eccDot(GP, k)
      C2 = eccDot(Public_Key, k)[0] + int(msg)
-
      return (C1, C2)
 
-decrypted_string = ''
 
 def decryption(C1, C2, private_Key):
-    
      solution = C2-eccDot(C1, private_Key)[0]
-
      return (solution)
 
-(C1,C2) = encryption(gen_pubKey(), encode(message))
+def main():
+    privKey = random.getrandbits(256)    
+    message = raw_input("Enter Message to be encrypted > ")
+    decrypted_string = ''
+    (C1,C2) = encryption(gen_pubKey(privKey), encode(message))
 
-decrypted_string = decryption(C1, C2, privKey)
-s=decode(str(decrypted_string))
+    decrypted_string = decryption(C1, C2, privKey)
+    s=decode(str(decrypted_string))
 
-print("Cipher : ", C1, C2)
-print("Original : ")
-print(s)
+    print("Cipher : ", C1, C2)
+    print("Original : ")
+    print(s)
+
+
+if __name__ == "__main__":
+    main()
