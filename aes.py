@@ -166,23 +166,19 @@ class AES:
         s[0][2], s[1][2], s[2][2], s[3][2] = s[2][2], s[3][2], s[0][2], s[1][2]
         s[0][3], s[1][3], s[2][3], s[3][3] = s[1][3], s[2][3], s[3][3], s[0][3]
 
-    def __mix_single_column(self, a):
-        # please see Sec 4.1.2 in The Design of Rijndael
-        t = a[0] ^ a[1] ^ a[2] ^ a[3]
-        u = a[0]
-        a[0] ^= t ^ xtime(a[0] ^ a[1])
-        a[1] ^= t ^ xtime(a[1] ^ a[2])
-        a[2] ^= t ^ xtime(a[2] ^ a[3])
-        a[3] ^= t ^ xtime(a[3] ^ u)
 
-
+    # see Sec 4.1.3 in The Design of Rijndael
     def __mix_columns(self, s):
         for i in range(4):
-            self.__mix_single_column(s[i])
+            t = s[i][0] ^ s[i][1] ^ s[i][2] ^ s[i][3]
+            u = s[i][0]
+            s[i][0] ^= t ^ xtime(s[i][0] ^ s[i][1])
+            s[i][1] ^= t ^ xtime(s[i][1] ^ s[i][2])
+            s[i][2] ^= t ^ xtime(s[i][2] ^ s[i][3])
+            s[i][3] ^= t ^ xtime(s[i][3] ^ u)
 
 
     def __inv_mix_columns(self, s):
-        # see Sec 4.1.3 in The Design of Rijndael
         for i in range(4):
             u = xtime(xtime(s[i][0] ^ s[i][2]))
             v = xtime(xtime(s[i][1] ^ s[i][3]))
@@ -198,22 +194,22 @@ import sys
 
 def main():
     if len(sys.argv)!=2:
-        print("Choose either encryption or decryption as follows: ")
-        print("python aes.py encrypt // python aes.py decrypt")
+        print "Choose either encryption or decryption as follows: "
+        print "python aes.py encrypt // python aes.py decrypt"
         exit()
 
     master_key = 0x2b7e151628aed2a6abf7158809cf4f3c
     aes = AES(master_key)
 
     if sys.argv[1]=="encrypt":
-        # plaintext=int(hex(int(input("Enter the text to be encrypted: "))),16)
+        # plaintext=int(hex(int(input("Enter the text to be encrypted: "))),0)
         plaintext = 0x3243f6a8885a308d313198a2e0370734
         encrypted = aes.encrypt(plaintext)
 
         print(plaintext)
         print(encrypted)
     elif sys.argv[1]=="decrypt":
-        # ciphertext=int(hex(int(input("Enter the text to be decrypted: "))),16)
+        # ciphertext=int(hex(int(input("Enter the text to be decrypted: "))),0)
         ciphertext = 0x3925841d02dc09fbdc118597196a0b32
         decrypted = aes.decrypt(ciphertext)
 
