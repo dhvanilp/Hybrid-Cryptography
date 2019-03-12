@@ -1,193 +1,175 @@
+import sys
+
 Sbox = (
-    0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5, 0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76,
-    0xCA, 0x82, 0xC9, 0x7D, 0xFA, 0x59, 0x47, 0xF0, 0xAD, 0xD4, 0xA2, 0xAF, 0x9C, 0xA4, 0x72, 0xC0,
-    0xB7, 0xFD, 0x93, 0x26, 0x36, 0x3F, 0xF7, 0xCC, 0x34, 0xA5, 0xE5, 0xF1, 0x71, 0xD8, 0x31, 0x15,
-    0x04, 0xC7, 0x23, 0xC3, 0x18, 0x96, 0x05, 0x9A, 0x07, 0x12, 0x80, 0xE2, 0xEB, 0x27, 0xB2, 0x75,
-    0x09, 0x83, 0x2C, 0x1A, 0x1B, 0x6E, 0x5A, 0xA0, 0x52, 0x3B, 0xD6, 0xB3, 0x29, 0xE3, 0x2F, 0x84,
-    0x53, 0xD1, 0x00, 0xED, 0x20, 0xFC, 0xB1, 0x5B, 0x6A, 0xCB, 0xBE, 0x39, 0x4A, 0x4C, 0x58, 0xCF,
-    0xD0, 0xEF, 0xAA, 0xFB, 0x43, 0x4D, 0x33, 0x85, 0x45, 0xF9, 0x02, 0x7F, 0x50, 0x3C, 0x9F, 0xA8,
-    0x51, 0xA3, 0x40, 0x8F, 0x92, 0x9D, 0x38, 0xF5, 0xBC, 0xB6, 0xDA, 0x21, 0x10, 0xFF, 0xF3, 0xD2,
-    0xCD, 0x0C, 0x13, 0xEC, 0x5F, 0x97, 0x44, 0x17, 0xC4, 0xA7, 0x7E, 0x3D, 0x64, 0x5D, 0x19, 0x73,
-    0x60, 0x81, 0x4F, 0xDC, 0x22, 0x2A, 0x90, 0x88, 0x46, 0xEE, 0xB8, 0x14, 0xDE, 0x5E, 0x0B, 0xDB,
-    0xE0, 0x32, 0x3A, 0x0A, 0x49, 0x06, 0x24, 0x5C, 0xC2, 0xD3, 0xAC, 0x62, 0x91, 0x95, 0xE4, 0x79,
-    0xE7, 0xC8, 0x37, 0x6D, 0x8D, 0xD5, 0x4E, 0xA9, 0x6C, 0x56, 0xF4, 0xEA, 0x65, 0x7A, 0xAE, 0x08,
-    0xBA, 0x78, 0x25, 0x2E, 0x1C, 0xA6, 0xB4, 0xC6, 0xE8, 0xDD, 0x74, 0x1F, 0x4B, 0xBD, 0x8B, 0x8A,
-    0x70, 0x3E, 0xB5, 0x66, 0x48, 0x03, 0xF6, 0x0E, 0x61, 0x35, 0x57, 0xB9, 0x86, 0xC1, 0x1D, 0x9E,
-    0xE1, 0xF8, 0x98, 0x11, 0x69, 0xD9, 0x8E, 0x94, 0x9B, 0x1E, 0x87, 0xE9, 0xCE, 0x55, 0x28, 0xDF,
-    0x8C, 0xA1, 0x89, 0x0D, 0xBF, 0xE6, 0x42, 0x68, 0x41, 0x99, 0x2D, 0x0F, 0xB0, 0x54, 0xBB, 0x16,
-)
+    99, 124, 119, 123, 242, 107, 111, 197, 48, 1, 103, 43, 254, 215, 171, 118,
+    202, 130, 201, 125, 250, 89, 71, 240, 173, 212, 162, 175, 156, 164, 114, 192,
+    183, 253, 147, 38, 54, 63, 247, 204, 52, 165, 229, 241, 113, 216, 49, 21,
+    4, 199, 35, 195, 24, 150, 5, 154, 7, 18, 128, 226, 235, 39, 178, 117,
+    9, 131, 44, 26, 27, 110, 90, 160, 82, 59, 214, 179, 41, 227, 47, 132,
+    83, 209, 0, 237, 32, 252, 177, 91, 106, 203, 190, 57, 74, 76, 88, 207,
+    208, 239, 170, 251, 67, 77, 51, 133, 69, 249, 2, 127, 80, 60, 159, 168,
+    81, 163, 64, 143, 146, 157, 56, 245, 188, 182, 218, 33, 16, 255, 243, 210,
+    205, 12, 19, 236, 95, 151, 68, 23, 196, 167, 126, 61, 100, 93, 25, 115,
+    96, 129, 79, 220, 34, 42, 144, 136, 70, 238, 184, 20, 222, 94, 11, 219, 224,
+    50, 58, 10, 73, 6, 36, 92, 194, 211, 172, 98, 145, 149, 228, 121, 231,
+    200, 55, 109, 141, 213, 78, 169, 108, 86, 244, 234, 101, 122, 174, 8, 186,
+    120, 37, 46, 28, 166, 180, 198, 232, 221, 116, 31, 75, 189, 139, 138, 112,
+    62, 181, 102, 72, 3, 246, 14, 97, 53, 87, 185, 134, 193, 29, 158, 225,
+    248, 152, 17, 105, 217, 142, 148, 155, 30, 135, 233, 206, 85, 40, 223, 140,
+    161, 137, 13, 191, 230, 66, 104, 65, 153, 45, 15, 176, 84, 187, 22
+    )
 
 InvSbox = (
-    0x52, 0x09, 0x6A, 0xD5, 0x30, 0x36, 0xA5, 0x38, 0xBF, 0x40, 0xA3, 0x9E, 0x81, 0xF3, 0xD7, 0xFB,
-    0x7C, 0xE3, 0x39, 0x82, 0x9B, 0x2F, 0xFF, 0x87, 0x34, 0x8E, 0x43, 0x44, 0xC4, 0xDE, 0xE9, 0xCB,
-    0x54, 0x7B, 0x94, 0x32, 0xA6, 0xC2, 0x23, 0x3D, 0xEE, 0x4C, 0x95, 0x0B, 0x42, 0xFA, 0xC3, 0x4E,
-    0x08, 0x2E, 0xA1, 0x66, 0x28, 0xD9, 0x24, 0xB2, 0x76, 0x5B, 0xA2, 0x49, 0x6D, 0x8B, 0xD1, 0x25,
-    0x72, 0xF8, 0xF6, 0x64, 0x86, 0x68, 0x98, 0x16, 0xD4, 0xA4, 0x5C, 0xCC, 0x5D, 0x65, 0xB6, 0x92,
-    0x6C, 0x70, 0x48, 0x50, 0xFD, 0xED, 0xB9, 0xDA, 0x5E, 0x15, 0x46, 0x57, 0xA7, 0x8D, 0x9D, 0x84,
-    0x90, 0xD8, 0xAB, 0x00, 0x8C, 0xBC, 0xD3, 0x0A, 0xF7, 0xE4, 0x58, 0x05, 0xB8, 0xB3, 0x45, 0x06,
-    0xD0, 0x2C, 0x1E, 0x8F, 0xCA, 0x3F, 0x0F, 0x02, 0xC1, 0xAF, 0xBD, 0x03, 0x01, 0x13, 0x8A, 0x6B,
-    0x3A, 0x91, 0x11, 0x41, 0x4F, 0x67, 0xDC, 0xEA, 0x97, 0xF2, 0xCF, 0xCE, 0xF0, 0xB4, 0xE6, 0x73,
-    0x96, 0xAC, 0x74, 0x22, 0xE7, 0xAD, 0x35, 0x85, 0xE2, 0xF9, 0x37, 0xE8, 0x1C, 0x75, 0xDF, 0x6E,
-    0x47, 0xF1, 0x1A, 0x71, 0x1D, 0x29, 0xC5, 0x89, 0x6F, 0xB7, 0x62, 0x0E, 0xAA, 0x18, 0xBE, 0x1B,
-    0xFC, 0x56, 0x3E, 0x4B, 0xC6, 0xD2, 0x79, 0x20, 0x9A, 0xDB, 0xC0, 0xFE, 0x78, 0xCD, 0x5A, 0xF4,
-    0x1F, 0xDD, 0xA8, 0x33, 0x88, 0x07, 0xC7, 0x31, 0xB1, 0x12, 0x10, 0x59, 0x27, 0x80, 0xEC, 0x5F,
-    0x60, 0x51, 0x7F, 0xA9, 0x19, 0xB5, 0x4A, 0x0D, 0x2D, 0xE5, 0x7A, 0x9F, 0x93, 0xC9, 0x9C, 0xEF,
-    0xA0, 0xE0, 0x3B, 0x4D, 0xAE, 0x2A, 0xF5, 0xB0, 0xC8, 0xEB, 0xBB, 0x3C, 0x83, 0x53, 0x99, 0x61,
-    0x17, 0x2B, 0x04, 0x7E, 0xBA, 0x77, 0xD6, 0x26, 0xE1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0C, 0x7D,
-)
+    82, 9, 106, 213, 48, 54, 165, 56, 191, 64, 163, 158, 129, 243, 215, 251,
+    124, 227, 57, 130, 155, 47, 255, 135, 52, 142, 67, 68, 196, 222, 233,
+    203, 84, 123, 148, 50, 166, 194, 35, 61, 238, 76, 149, 11, 66, 250, 195,
+    78, 8, 46, 161, 102, 40, 217, 36, 178, 118, 91, 162, 73, 109, 139, 209,
+    37, 114, 248, 246, 100, 134, 104, 152, 22, 212, 164, 92, 204, 93, 101,
+    182, 146, 108, 112, 72, 80, 253, 237, 185, 218, 94, 21, 70, 87, 167, 141,
+    157, 132, 144, 216, 171, 0, 140, 188, 211, 10, 247, 228, 88, 5, 184, 179,
+    69, 6, 208, 44, 30, 143, 202, 63, 15, 2, 193, 175, 189, 3, 1, 19, 138,
+    107, 58, 145, 17, 65, 79, 103, 220, 234, 151, 242, 207, 206, 240, 180,
+    230, 115, 150, 172, 116, 34, 231, 173, 53, 133, 226, 249, 55, 232, 28, 117,
+    223, 110, 71, 241, 26, 113, 29, 41, 197, 137, 111, 183, 98, 14, 170, 24,
+    190, 27, 252, 86, 62, 75, 198, 210, 121, 32, 154, 219, 192, 254, 120, 205,
+    90, 244, 31, 221, 168, 51, 136, 7, 199, 49, 177, 18, 16, 89, 39, 128, 236,
+    95, 96, 81, 127, 169, 25, 181, 74, 13, 45, 229, 122, 159, 147, 201, 156,
+    239, 160, 224, 59, 77, 174, 42, 245, 176, 200, 235, 187, 60, 131, 83, 153,
+    97, 23, 43, 4, 126, 186, 119, 214, 38, 225, 105,20, 99, 85, 33, 12, 125
+    )
 
-
-# learnt from http://cs.ucsb.edu/~koc/cs178/projects/JT/aes.c
-xtime = lambda a: (((a << 1) ^ 0x1B) & 0xFF) if (a & 0x80) else (a << 1)
-
-
-Rcon = (
-    0x00, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40,
-    0x80, 0x1B, 0x36, 0x6C, 0xD8, 0xAB, 0x4D, 0x9A,
-    0x2F, 0x5E, 0xBC, 0x63, 0xC6, 0x97, 0x35, 0x6A,
-    0xD4, 0xB3, 0x7D, 0xFA, 0xEF, 0xC5, 0x91, 0x39,
-)
-
-
-def input_to_matrix(input):
-    matrix = []
-    for i in range(16):
-        byte = (input >> (8 * (15 - i))) & 0xFF
-        if i % 4 == 0:
-            matrix.append([byte])
-        else:
-            matrix[i // 4].append(byte)
-    return matrix
-
-
-def matrix_to_output(matrix):
-    output = 0
-    for i in range(4):
-        for j in range(4):
-            output |= (matrix[i][j] << (120 - 8 * (4 * i + j)))
-    return output
+Rcon = (0, 1, 2, 4, 8, 16, 32, 64, 128, 27, 54, 108, 216, 171, 77, 154, 47, 94, 188, 99, 198, 151, 53, 106, 212, 179, 125, 250, 239, 197, 145, 57)
 
 
 class AES:
     def __init__(self, master_key):
-        self.shift_key(master_key)
+        self.shiftKey(master_key)
 
-    def shift_key(self, master_key):
-        self.round_key = input_to_matrix(master_key)
+    def shiftKey(self, master_key):
+        self.roundKey = inputMatrix(master_key)
 
         for i in range(4, 4 * 11):
-            self.round_key.append([])
+            self.roundKey.append([])
             if i % 4 == 0:
-                byte = self.round_key[i - 4][0]        \
-                     ^ Sbox[self.round_key[i - 1][1]]  \
+                byte = self.roundKey[i - 4][0]        \
+                     ^ Sbox[self.roundKey[i - 1][1]]  \
                      ^ Rcon[i // 4]
-                self.round_key[i].append(byte)
+                self.roundKey[i].append(byte)
 
                 for j in range(1, 4):
-                    byte = self.round_key[i - 4][j]    \
-                         ^ Sbox[self.round_key[i - 1][(j + 1) % 4]]
-                    self.round_key[i].append(byte)
+                    byte = self.roundKey[i - 4][j]    \
+                         ^ Sbox[self.roundKey[i - 1][(j + 1) % 4]]
+                    self.roundKey[i].append(byte)
             else:
                 for j in range(4):
-                    byte = self.round_key[i - 4][j]    \
-                         ^ self.round_key[i - 1][j]
-                    self.round_key[i].append(byte)
+                    byte = self.roundKey[i - 4][j]    \
+                         ^ self.roundKey[i - 1][j]
+                    self.roundKey[i].append(byte)
 
 
     def encrypt(self, plaintext):
-        self.plain_state = input_to_matrix(plaintext)
+        self.plainState = inputMatrix(plaintext)
 
-        self.add_round_key(self.plain_state, self.round_key[:4])
+        self.addRoundKey(self.plainState, self.roundKey[:4])
 
-        for i in range(1, 10):
-            self.round_encrypt(self.plain_state, self.round_key[4 * i : 4 * (i + 1)])
+        for i in range(1, 10):           
+            self.substituteBytes(self.plainState)
+            self.rowShifter(self.plainState)
+            self.columnMixer(self.plainState)
+            self.addRoundKey(self.plainState, self.roundKey[4 * i : 4 * (i + 1)])
 
-        self.substitute_bytes(self.plain_state)
-        self.shift_rows(self.plain_state)
-        self.add_round_key(self.plain_state, self.round_key[40:])
+        self.substituteBytes(self.plainState)
+        self.rowShifter(self.plainState)
+        self.addRoundKey(self.plainState, self.roundKey[40:])
 
-        return matrix_to_output(self.plain_state)
+        return matrixOutput(self.plainState)
 
     def decrypt(self, ciphertext):
-        self.cipher_state = input_to_matrix(ciphertext)
+        self.cipher_state = inputMatrix(ciphertext)
 
-        self.add_round_key(self.cipher_state, self.round_key[40:])
-        self.inverse_shift_rows(self.cipher_state)
-        self.inverse_substitute_bytes(self.cipher_state)
+        self.addRoundKey(self.cipher_state, self.roundKey[40:])
+        self.inverseRowShifter(self.cipher_state)
+        self.inverseSubstituteBytes(self.cipher_state)
 
         for i in range(9, 0, -1):
-            self.round_decrypt(self.cipher_state, self.round_key[4 * i : 4 * (i + 1)])
+            self.addRoundKey(self.cipher_state, self.roundKey[4 * i : 4 * (i + 1)])
+            self.inverseColumnMixer(self.cipher_state)
+            self.inverseRowShifter(self.cipher_state)
+            self.inverseSubstituteBytes(self.cipher_state)
 
-        self.add_round_key(self.cipher_state, self.round_key[:4])
+        self.addRoundKey(self.cipher_state, self.roundKey[:4])
 
-        return matrix_to_output(self.cipher_state)
+        return matrixOutput(self.cipher_state)
 
-    def add_round_key(self, s, k):
+    def addRoundKey(self, s, k):
         for i in range(4):
             for j in range(4):
                 s[i][j] ^= k[i][j]
 
-
-    def round_encrypt(self, state_matrix, key_matrix):
-        self.substitute_bytes(state_matrix)
-        self.shift_rows(state_matrix)
-        self.mix_columns(state_matrix)
-        self.add_round_key(state_matrix, key_matrix)
-
-
-    def round_decrypt(self, state_matrix, key_matrix):
-        self.add_round_key(state_matrix, key_matrix)
-        self.inverse_mix_columns(state_matrix)
-        self.inverse_shift_rows(state_matrix)
-        self.inverse_substitute_bytes(state_matrix)
-
-    def substitute_bytes(self, s):
+    def substituteBytes(self, s):
         for i in range(4):
             for j in range(4):
                 s[i][j] = Sbox[s[i][j]]
 
 
-    def inverse_substitute_bytes(self, s):
+    def inverseSubstituteBytes(self, s):
         for i in range(4):
             for j in range(4):
                 s[i][j] = InvSbox[s[i][j]]
 
 
-    def shift_rows(self, s):
-        s[0][1], s[1][1], s[2][1], s[3][1] = s[1][1], s[2][1], s[3][1], s[0][1]
-        s[0][2], s[1][2], s[2][2], s[3][2] = s[2][2], s[3][2], s[0][2], s[1][2]
-        s[0][3], s[1][3], s[2][3], s[3][3] = s[3][3], s[0][3], s[1][3], s[2][3]
+    def rowShifter(self, shift):
+        shift[0][1], shift[1][1], shift[2][1], shift[3][1] = shift[1][1], shift[2][1], shift[3][1], shift[0][1]
+        shift[0][2], shift[1][2], shift[2][2], shift[3][2] = shift[2][2], shift[3][2], shift[0][2], shift[1][2]
+        shift[0][3], shift[1][3], shift[2][3], shift[3][3] = shift[3][3], shift[0][3], shift[1][3], shift[2][3]
 
 
-    def inverse_shift_rows(self, s):
-        s[0][1], s[1][1], s[2][1], s[3][1] = s[3][1], s[0][1], s[1][1], s[2][1]
-        s[0][2], s[1][2], s[2][2], s[3][2] = s[2][2], s[3][2], s[0][2], s[1][2]
-        s[0][3], s[1][3], s[2][3], s[3][3] = s[1][3], s[2][3], s[3][3], s[0][3]
+    def inverseRowShifter(self, iShift):
+        iShift[0][1], iShift[1][1], iShift[2][1], iShift[3][1] = iShift[3][1], iShift[0][1], iShift[1][1], iShift[2][1]
+        iShift[0][2], iShift[1][2], iShift[2][2], iShift[3][2] = iShift[2][2], iShift[3][2], iShift[0][2], iShift[1][2]
+        iShift[0][3], iShift[1][3], iShift[2][3], iShift[3][3] = iShift[1][3], iShift[2][3], iShift[3][3], iShift[0][3]
 
 
-    # see Sec 4.1.3 in The Design of Rijndael
-    def mix_columns(self, s):
+    def columnMixer(self, state):
         for i in range(4):
-            t = s[i][0] ^ s[i][1] ^ s[i][2] ^ s[i][3]
-            u = s[i][0]
-            s[i][0] ^= t ^ xtime(s[i][0] ^ s[i][1])
-            s[i][1] ^= t ^ xtime(s[i][1] ^ s[i][2])
-            s[i][2] ^= t ^ xtime(s[i][2] ^ s[i][3])
-            s[i][3] ^= t ^ xtime(s[i][3] ^ u)
+            t = state[i][0] ^ state[i][1] ^ state[i][2] ^ state[i][3]
+            u = state[i][0]
+            state[i][0] ^= t ^ mixFactor(state[i][0] ^ state[i][1])
+            state[i][1] ^= t ^ mixFactor(state[i][1] ^ state[i][2])
+            state[i][2] ^= t ^ mixFactor(state[i][2] ^ state[i][3])
+            state[i][3] ^= t ^ mixFactor(state[i][3] ^ u)
 
 
-    def inverse_mix_columns(self, s):
+    def inverseColumnMixer(self, state):
         for i in range(4):
-            u = xtime(xtime(s[i][0] ^ s[i][2]))
-            v = xtime(xtime(s[i][1] ^ s[i][3]))
-            s[i][0] ^= u
-            s[i][1] ^= v
-            s[i][2] ^= u
-            s[i][3] ^= v
+            u = mixFactor(mixFactor(state[i][0] ^ state[i][2]))
+            v = mixFactor(mixFactor(state[i][1] ^ state[i][3]))
+            state[i][0] ^= u
+            state[i][1] ^= v
+            state[i][2] ^= u
+            state[i][3] ^= v
 
-        self.mix_columns(s)
+        self.columnMixer(state)
 
-import sys
+def mixFactor(x):
+    return (((x << 1) ^ 27) & 255) if (x & 128) else (x << 1)
+
+def inputMatrix(input):
+    matrix = []
+    for i in range(16):
+        inputByte = (input >> (8 * (15 - i))) & 0xFF
+        if i % 4 == 0:
+            matrix.append([inputByte])
+        else:
+            matrix[i // 4].append(inputByte)
+    return matrix
+
+def matrixOutput(matrix):
+    output = 0
+    for i in range(4):
+        for j in range(4):
+            output |= (matrix[i][j] << (120 - 8 * (4 * i + j)))
+    return output
 
 
 def main():
