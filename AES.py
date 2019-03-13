@@ -128,6 +128,27 @@ def matrixOutput(matrix):
             output |= (matrix[i][j] << (120 - (((i << 2) + j) << 3)))
     return output
 
+def encAscii(character):
+	return ord(character)<<2
+
+def decAscii(asciiVal):
+	return  int(asciiVal)>>2
+
+def encode(msg):
+	encodedString = ''
+	for i in msg:
+		encodedString+=str(encAscii(i))
+	return encodedString
+
+def decode(encAscii_string):
+	pack = ''
+	i = 0
+	decodedString = ''
+	while (i < len(str(encAscii_string))):
+		pack = encAscii_string[i:i+3]
+		decodedString+=chr(decAscii(pack))
+		i=i+3
+	return decodedString;	
 
 def main():
     if len(sys.argv)!=2:
@@ -139,16 +160,21 @@ def main():
     aes = AES(key)
 
     if sys.argv[1]=="encrypt":
-        # plaintext=int(hex(int(input("Enter the text to be encrypted: "))),0)
-        plaintext = 0x3243f6a8885a308d313198a2e0370734
+        msg=raw_input("Enter the text to be encrypted: ")
+        if len(msg)>12:
+            print "Enter 128 bit string"
+            exit()
+        plaintext=int(hex(int(encode(msg))),0)
+        # plaintext = 0x3243f6a8885a308d313198a2e0370734
         encrypted = aes.encrypt(plaintext)
 
         print(plaintext)
         print(encrypted)
     elif sys.argv[1]=="decrypt":
-        # ciphertext=int(hex(int(input("Enter the text to be decrypted: "))),0)
-        ciphertext = 0x3925841d02dc09fbdc118597196a0b32
+        ciphertext=int(hex(int(input("Enter the text to be decrypted: "))),0)
+        # ciphertext = 0x3925841d02dc09fbdc118597196a0b32
         decrypted = aes.decrypt(ciphertext)
+        decrypted=decode(str(decrypted))
 
         print(ciphertext)
         print(decrypted)
