@@ -168,7 +168,8 @@ def main():
         # plaintext = 0x3243f6a8885a308d313198a2e0370734
         encrypted = aes.encrypt(plaintext)
 
-        print(plaintext)
+        # print(plaintext)
+        print "Cipher Text is: "
         print(encrypted)
     elif sys.argv[1]=="decrypt":
         ciphertext=int(hex(int(input("Enter the text to be decrypted: "))),0)
@@ -176,7 +177,8 @@ def main():
         decrypted = aes.decrypt(ciphertext)
         decrypted=decode(str(decrypted))
 
-        print(ciphertext)
+        # print(ciphertext)
+        print "Decrypted(Original) Text is:"
         print(decrypted)
 
 

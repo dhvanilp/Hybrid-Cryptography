@@ -88,9 +88,11 @@ def main():
     decrypted_string = decryption(C1, C2, privKey)
     s=decode(str(decrypted_string))
 
-    print("Cipher : ", C1, C2)
-    print("Original : ")
-    print(s)
+    print "\nCipher (C1,C2): "
+    print "\nC1(x,y) is: ", C1
+    print "\nC2(x,y) is: ", C2
+    print "\nOriginal : "
+    print s
 
 
 if __name__ == "__main__":
