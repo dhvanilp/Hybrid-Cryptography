@@ -81,23 +81,4 @@ class ECC:
     def decryption(self,C1, C2, private_Key):
         solution = C2 - self.eccDot(C1, private_Key)[0]
         return (solution)
-
-def main():
-    privKey = random.getrandbits(256)    
-    message = raw_input("Enter Message to be encrypted > ")
-    decrypted_string = ''
-    ecc=ECC()
-    (C1,C2) = ecc.encryption(ecc.gen_pubKey(privKey), ecc.encode(message))
-
-    decrypted_string = ecc.decryption(C1, C2, privKey)
-    s=ecc.decode(str(decrypted_string))
-
-    print "\nCipher (C1,C2): "
-    print "\nC1(x,y) is: ", C1
-    print "\nC2(x,y) is: ", C2
-    print "\nOriginal : "
-    print s
-
-
-if __name__ == "__main__":
-    main()
+        

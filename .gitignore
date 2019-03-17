@@ -1,2 +1,13 @@
 *.pyc
 .vscode/
+venv/
+test_files/*
+
+# media files 
+*.png
+*.jpg
+*.jpeg
+*.mkv
+*.mp4
+*.avi
+.mp3
