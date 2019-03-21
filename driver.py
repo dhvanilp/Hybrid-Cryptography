@@ -1,11 +1,8 @@
-# from Convert import converter
-# data = converter.fileToBase64("test_files/test.jpg")
-# # print data
-# converter.base64ToFile(data,"tesasat.jpg")
 import sys
 import random
 from AES_module import AES
 from ECC_module import ECC
+from Convert import converter
 
 def main():
 # _______________________________________________
@@ -15,14 +12,16 @@ def main():
     aes = AES.AES(key)
     msg=raw_input("Enter the text to be encrypted: ")
 
-    encrypted = aes.encryption( int(hex(int(aes.encode(msg))),0) )
+    encrypted = aes.encryption( int(aes.encode(msg)) )
     ciphertext= int(encrypted)
+    print aes.encode(msg)
+    print str(aes.decryption(ciphertext))
     decrypted = aes.decode(str(aes.decryption(ciphertext)))
     print "Decrypted(Original) Text is:"
     print(decrypted) 
 
-# _______________________________________________
-# _______________________________________________
+# # _______________________________________________
+# # _______________________________________________
 # ECC tester 
     ecc=ECC.ECC()
     privKey = random.getrandbits(256)    
@@ -39,9 +38,10 @@ def main():
     print "\nC2(x,y) is: ", C2
     print "\nOriginal : "
     print s
-
-
-# _______________________________________________
+# # _______________________________________________
+#     data = converter.fileToBase64("test_files/test.jpg") 
+#     # print data
+#     converter.base64ToFile(data,"tesasat.jpg")
 
 
 if __name__ == "__main__":
