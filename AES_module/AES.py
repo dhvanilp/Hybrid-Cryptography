@@ -1,7 +1,5 @@
 import sys
-import Constants
-
-
+from . import Constants
 class AES:
     def __init__(self, key):
         self.shiftKey(key)

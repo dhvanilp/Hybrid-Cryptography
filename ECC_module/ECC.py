@@ -1,5 +1,5 @@
 import random
-from Curve import *
+from .Curve import *
 
 
 class ECC:
@@ -8,10 +8,10 @@ class ECC:
         self.k = random.getrandbits(256)
 
     def encAscii(self, character):
-        return ord(character) << 2
+        return ord(character) + 104
 
     def decAscii(self, asciiVal):
-        return int(asciiVal) >> 2
+        return int(asciiVal) - 104
 
     def encode(self, msg):
         encodedString = ''
@@ -22,6 +22,7 @@ class ECC:
     def decode(self, encAscii_string):
         pack = ''
         i = 0
+        print("This is the string:",encAscii_string)
         decodedString = ''
         while (i < len(str(encAscii_string))):
             pack = encAscii_string[i:i+3]
@@ -50,7 +51,8 @@ class ECC:
         return(x, y)
 
     def ecTwoFold(self, a):
-        Lam = ((3*a[0]*a[0]+A) * self.modInverse((2*a[1]), P)) % P
+        temp = self.modInverse((2*a[1]), P)
+        Lam = (( ((3* ((a[0]*a[0])%P)%P)+A) % P )* temp ) % P
         x = (Lam*Lam-2*a[0]) % P
         y = (Lam*(a[0]-x)-a[1]) % P
         return(x, y)
