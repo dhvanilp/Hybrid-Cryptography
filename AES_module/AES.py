@@ -1,6 +1,7 @@
 import sys
 import Constants
 
+
 class AES:
     def __init__(self, key):
         self.shiftKey(key)
@@ -11,28 +12,30 @@ class AES:
         for i in range(4, 4 * 11):
             self.roundKey.append([])
             if i % 4 == 0:
-                newKey = self.roundKey[i - 4][0] ^ Constants.Sbox[self.roundKey[i - 1][1]] ^ Constants.Rcon[i // 4]
+                newKey = self.roundKey[i - 4][0] ^ Constants.Sbox[self.roundKey[i - 1]
+                                                                  [1]] ^ Constants.Rcon[i // 4]
                 self.roundKey[i].append(newKey)
 
                 for j in range(1, 4):
-                    newKey = self.roundKey[i - 4][j] ^ Constants.Sbox[self.roundKey[i - 1][(j + 1) % 4]]
+                    newKey = self.roundKey[i -
+                                           4][j] ^ Constants.Sbox[self.roundKey[i - 1][(j + 1) % 4]]
                     self.roundKey[i].append(newKey)
             else:
                 for j in range(4):
                     newKey = self.roundKey[i - 4][j] ^ self.roundKey[i - 1][j]
                     self.roundKey[i].append(newKey)
 
-
     def encryption(self, plainText):
         self.plainState = self.inputMatrix(plainText)
 
         self.addRoundKey(self.plainState, self.roundKey[:4])
 
-        for i in range(1, 10):           
-            self.substituteBytes(self.plainState)                           #sub bytes
-            self.rowShifter(self.plainState)                                #shift rows
-            self.columnMixer(self.plainState)                               #mix column    
-            self.addRoundKey(self.plainState, self.roundKey[4 * i : 4 * (i + 1)])
+        for i in range(1, 10):
+            self.substituteBytes(self.plainState)  # sub bytes
+            self.rowShifter(self.plainState)  # shift rows
+            self.columnMixer(self.plainState)  # mix column
+            self.addRoundKey(
+                self.plainState, self.roundKey[4 * i: 4 * (i + 1)])
 
         self.substituteBytes(self.plainState)
         self.rowShifter(self.plainState)
@@ -48,7 +51,8 @@ class AES:
         self.inverseSubstituteBytes(self.cipher_state)
 
         for i in range(9, 0, -1):
-            self.addRoundKey(self.cipher_state, self.roundKey[4 * i : 4 * (i + 1)])
+            self.addRoundKey(self.cipher_state,
+                             self.roundKey[4 * i: 4 * (i + 1)])
             self.inverseColumnMixer(self.cipher_state)
             self.inverseRowShifter(self.cipher_state)
             self.inverseSubstituteBytes(self.cipher_state)
@@ -60,31 +64,27 @@ class AES:
     def addRoundKey(self, s, k):
         for i in range(4):
             for j in range(4):
-                s[i][j] = s[i][j] ^  k[i][j]
+                s[i][j] = s[i][j] ^ k[i][j]
 
     def substituteBytes(self, s):
         for i in range(4):
             for j in range(4):
                 s[i][j] = Constants.Sbox[s[i][j]]
 
-
     def inverseSubstituteBytes(self, s):
         for i in range(4):
             for j in range(4):
                 s[i][j] = Constants.InvSbox[s[i][j]]
-
 
     def rowShifter(self, shift):
         shift[0][1], shift[1][1], shift[2][1], shift[3][1] = shift[1][1], shift[2][1], shift[3][1], shift[0][1]
         shift[0][2], shift[1][2], shift[2][2], shift[3][2] = shift[2][2], shift[3][2], shift[0][2], shift[1][2]
         shift[0][3], shift[1][3], shift[2][3], shift[3][3] = shift[3][3], shift[0][3], shift[1][3], shift[2][3]
 
-
     def inverseRowShifter(self, iShift):
         iShift[0][1], iShift[1][1], iShift[2][1], iShift[3][1] = iShift[3][1], iShift[0][1], iShift[1][1], iShift[2][1]
         iShift[0][2], iShift[1][2], iShift[2][2], iShift[3][2] = iShift[2][2], iShift[3][2], iShift[0][2], iShift[1][2]
         iShift[0][3], iShift[1][3], iShift[2][3], iShift[3][3] = iShift[1][3], iShift[2][3], iShift[3][3], iShift[0][3]
-
 
     def columnMixer(self, state):
         for i in range(4):
@@ -94,7 +94,6 @@ class AES:
             state[i][1] ^= t ^ self.mixFactor(state[i][1] ^ state[i][2])
             state[i][2] ^= t ^ self.mixFactor(state[i][2] ^ state[i][3])
             state[i][3] ^= t ^ self.mixFactor(state[i][3] ^ u)
-
 
     def inverseColumnMixer(self, state):
         for i in range(4):
@@ -129,15 +128,15 @@ class AES:
         return output
 
     def encAscii(self, character):
-        return ord(character)<<2
+        return ord(character) << 2
 
     def decAscii(self, asciiVal):
-        return  int(asciiVal)>>2
+        return int(asciiVal) >> 2
 
     def encode(self, msg):
         encodedString = ''
         for i in msg:
-            encodedString+=str(self.encAscii(i))
+            encodedString += str(self.encAscii(i))
         return encodedString
 
     def decode(self, encAscii_string):
@@ -146,7 +145,6 @@ class AES:
         decodedString = ''
         while (i < len(str(encAscii_string))):
             pack = encAscii_string[i:i+3]
-            decodedString+=chr(self.decAscii(pack))
-            i=i+3
-        return decodedString;	
-
+            decodedString += chr(self.decAscii(pack))
+            i = i+3
+        return decodedString
