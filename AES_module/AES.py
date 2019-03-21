@@ -1,5 +1,7 @@
 import sys
 from . import Constants
+
+
 class AES:
     def __init__(self, key):
         self.shiftKey(key)
@@ -146,3 +148,33 @@ class AES:
             decodedString += chr(self.decAscii(pack))
             i = i+3
         return decodedString
+
+    def breakIntoChunks(self, data):
+        retData = []
+        dataLen = len(data)
+        for i in range(0, dataLen, 12):
+            temp = data[i:i+12]
+            retData.append(temp)
+        return retData
+
+    def chunksToData(self, chunks):
+        retData = ""
+        for i in chunks:
+            retData = retData+i
+        return retData
+
+    def encryptBigData(self, data):
+        chuck_data = self.breakIntoChunks(data)
+        retData = []
+        for chunk in chuck_data:
+            encrypted_chunk = self.encryption(int(self.encode(chunk)))
+            encrypted_chunk = int(encrypted_chunk)
+            retData.append(encrypted_chunk)
+        return retData
+
+    def decryptBigData(self, encrypted_chunks):
+        data=""
+        for chunk in encrypted_chunks:
+            decrypted_chunk = self.decode(str(self.decryption(chunk)))
+            data=data+decrypted_chunk
+        return data
