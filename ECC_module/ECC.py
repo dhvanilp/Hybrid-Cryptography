@@ -1,5 +1,5 @@
 import random
-from Curve import *
+from .Curve import *
 
 
 class ECC:
@@ -37,7 +37,7 @@ class ECC:
         low = a % n
         high = n
         while low > 1:
-            r = high/low
+            r = high//low
             nm = highM-lowM*r
             new = high-low*r
             lowM, low, highM, high = nm, new, lowM, low
