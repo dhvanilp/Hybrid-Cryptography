@@ -72,10 +72,11 @@ class ECC:
         return PublicKey
 
     def encryption(self, Public_Key, msg):
+        msg = self.encode(msg)
         C1 = self.eccDot(GP, self.k)
         C2 = self.eccDot(Public_Key, self.k)[0] + int(msg)
         return (C1, C2)
 
     def decryption(self, C1, C2, private_Key):
         solution = C2 - self.eccDot(C1, private_Key)[0]
-        return (solution)
+        return self.decode(str(solution))

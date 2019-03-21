@@ -9,10 +9,11 @@ def main():
 
     # # _______________________________________________
     # AES tester
+    msg = input("Enter the text to be encrypted > ")
 
     key = 0x2b7e151628aed2a6abf7158809cf4f3c
+
     aes = AES.AES(key)
-    msg = input("Enter the text to be encrypted: ")
 
     dataE = aes.encryptBigData(msg)
     print("This is the encrypted data:", dataE)
@@ -21,24 +22,24 @@ def main():
     print("This is the decrypted data:", dataD)
 
 
-# # _______________________________________________
-# # _______________________________________________
+    # # _______________________________________________
+    # # _______________________________________________
 # ECC tester
-    # ecc = ECC.ECC()
-    # privKey = random.getrandbits(256)
-    # message = input("Enter Message to be encrypted > ")
+    message = input("Enter Message to be encrypted > ")
+    
+    privKey = random.getrandbits(256)
+    
+    ecc = ECC.ECC()
+    public_key = ecc.gen_pubKey(privKey)
 
-    # decrypted_string = ''
-    # (C1, C2) = ecc.encryption(ecc.gen_pubKey(privKey), ecc.encode(message))
+    (C1, C2) = ecc.encryption(public_key, message)
 
-    # decrypted_string = ecc.decryption(C1, C2, privKey)
-    # s = ecc.decode(str(decrypted_string))
+    dataD = ecc.decryption(C1, C2, privKey)
 
-    # print("\nCipher (C1,C2): ")
-    # print("\nC1(x,y) is: ", C1)
-    # print("\nC2(x,y) is: ", C2)
-    # print("\nOriginal : ")
-    # print(s)
+    print("Cipher (C1,C2): ")
+    print("C1(x,y) is: ", C1)
+    print("C2(x,y) is: ", C2)
+    print("Original : ",dataD)
 # # _______________________________________________
 #     data = converter.fileToBase64("test_files/test.jpg")
 #     # print data
