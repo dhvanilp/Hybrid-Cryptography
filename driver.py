@@ -126,7 +126,7 @@ def main():
         C1_aesKey, C2_aesKey, privKey_for_aesKey)
     
     print("hi")
-    print(int(hex(int(decryptedAESkey))),16)
+    print(int(hex(int(decryptedAESkey))),0)
 
     # 2. Decrypt with AES
     aes_multimedia_data = AES.AES(hex(decryptedAESkey))
