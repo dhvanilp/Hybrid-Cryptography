@@ -1,0 +1,61 @@
+{%  extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+Enigma
+{% endblock %}
+
+{% block extra-head %}
+<script src="http://localhost:4000/socket.io/socket.io.js"></script>
+{% endblock %}
+
+{% block body %}
+    <p id="status">
+
+    </p>
+
+    <script>
+
+
+    var host = 'localhost';
+    var port = '4000';
+
+    var socket = io(host + ':' + port);
+
+    xhttp = new XMLHttpRequest();
+    receiver="{{ name }}";
+    ecc_public="{{ ecc_public_key }}";
+    msgObject = {
+        'receiver': receiver,
+        'ecc_public': ecc_public,
+    };
+    socket.emit('receive', msgObject);
+    $("#status").text("Receiving...")
+    console.log("emitted");
+
+    socket.on('getSend', function(msgObject) {
+        $("#status").text("File Received from "+msgObject['sender']+". Decrypting......");
+        console.log(msgObject['sender']);
+        msgObject["ecc_private"]="{{ ecc_private_key }}";
+        {#xhttp.open('POST', '{% url "transfer:decryptFile" %}', true);#}
+        {#// sends the data to the view#}
+        {#xhttp.send(JSON.stringify(msgObject));#}
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "transfer:decryptFile" %}',
+            data: JSON.stringify(msgObject), // or JSON.stringify ({name: 'jonas'}),
+            success: function(data) {
+                console.log('data: ' + data['file_name']);
+                $("#status").text("Decrypted");
+                downloadLink="</br><a href='http://127.0.0.1:8000/downloadFile/"+data['file_name']+"'>Click Here to download</a>";
+                $("#status").append(downloadLink)
+                },
+            contentType: "application/json",
+            dataType: 'json'
+        });
+
+        console.log("Download");
+
+    });
+    </script>
+{% endblock %}

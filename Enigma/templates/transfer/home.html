@@ -1,0 +1,59 @@
+{%  extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+Enigma
+{% endblock %}
+
+{% block body %}
+    <div class="contact1-pic js-tilt" data-tilt>
+        <img src='{% static "images/img-01.png" %}' alt="IMG">
+    </div>
+
+    <form class="contact1-form validate-form" action="{% url 'transfer:transfer' %}" method="post">
+        {% csrf_token %}
+        <span class="contact1-form-title">
+            Enter a nickname
+        </span>
+
+        <div class="wrap-input1 validate-input" data-validate = "Nickname is required">
+            <input class="input1" type="text" name="name" placeholder="Nickname">
+            <span class="shadow-input1"></span>
+        </div>
+
+        <div class="container-contact1-form-btn">
+            <button class="contact1-form-btn">
+                <span>
+                    Start Transferring
+                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                </span>
+            </button>
+        </div>
+    </form>
+
+    {% if file %}
+        <script src="http://localhost:4000/socket.io/socket.io.js"></script>
+
+        <script>
+
+            var host = 'localhost';
+            var port = '4000';
+
+            var socket = io(host + ':' + port);
+
+            msgObject={
+                'sender' : "{{ file.sender }}",
+                'receiver' : "{{ file.receiver }}",
+                'file_name' : "{{ file.file }}",
+                'C1_aesKey' : "{{ file.C1_aesKey }}",
+                'C2_aesKey' : "{{ file.C2_aesKey }}",
+                'C1_multimedia' : "{{ file.C1_multimedia}}",
+                'C2_multimedia' : "{{ file.C2_multimedia}}",
+            }
+
+            socket.emit('send', msgObject);
+            console.log("emitted");
+
+        </script>
+
+    {% endif %}
+{% endblock %}

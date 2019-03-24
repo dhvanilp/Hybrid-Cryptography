@@ -1,0 +1,40 @@
+{%  extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+Enigma
+{% endblock %}
+
+{% block body %}
+    <figure>
+        <img src='{% static "images/send.jpeg" %}'>
+        <figcaption>
+            <div class="container-contact1-form-btn">
+                <a href='{% url "transfer:send" name %}'><button id="send" class="contact1-form-btn">
+                    <span>
+                        Send
+                    </span>
+                </button></a>
+            </div>
+        </figcaption>
+    </figure>
+    <figure>
+        <img src='{% static "images/receive.jpeg" %}'>
+        <figcaption>
+            <div class="container-contact1-form-btn">
+                <a href='{% url "transfer:receive" name %}'><button id="receive" class="contact1-form-btn">
+                    <span>
+                        Receive
+                    </span>
+                </button></a>
+            </div>
+        </figcaption>
+    </figure>
+
+    <script>
+
+    $("#send").click(function () {
+
+    })
+    </script>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{%  extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+Enigma
+{% endblock %}
+
+
+
+{% block body %}
+    <div class="contact1-pic js-tilt" data-tilt>
+        <img src='{% static "images/send.jpeg" %}' alt="IMG">
+    </div>
+
+    <form class="contact1-form validate-form" action='{% url "transfer:sendFile" file.pk %}' method="post">
+        {% csrf_token %}
+
+        <div class="wrap-input1 validate-input" data-validate = "Nickname is required">
+            <input class="input1" type="text" name="receiver" placeholder="Nickname">
+            <span class="shadow-input1"></span>
+        </div>
+
+        <div class="wrap-input2 validate-input" data-validate = "File is required">
+            <input class="input2" type="file" name="file" placeholder="File">
+            <span class="shadow-input2"></span>
+        </div>
+
+        <div class="container-contact1-form-btn">
+            <button class="contact1-form-btn">
+                <span>
+                    Send
+                </span>
+            </button>
+        </div>
+    </form>
+{% endblock %}

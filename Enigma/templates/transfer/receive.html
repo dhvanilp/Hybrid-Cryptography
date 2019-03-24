@@ -1,0 +1,25 @@
+{%  extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+Enigma
+{% endblock %}
+
+{% block body %}
+    <form class="contact1-form validate-form" action='{% url "transfer:receiveFile" name %}' method="post">
+        {% csrf_token %}
+
+        <div class="wrap-input1 validate-input" data-validate = "ECC Private Key is required">
+            <input id="ecc_private" class="input1" type="text" name="ecc_private" placeholder="ECC Pivate Key">
+            <span class="shadow-input1"></span>
+        </div>
+
+        <div class="container-contact1-form-btn">
+            <button id="receive" class="contact1-form-btn">
+                <span>
+                    Receive
+                </span>
+            </button>
+        </div>
+    </form>
+
+{% endblock %}

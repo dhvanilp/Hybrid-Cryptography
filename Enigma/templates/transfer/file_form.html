@@ -1,0 +1,85 @@
+ {%  extends 'base.html' %}
+{% load staticfiles %}
+
+{% block extra-head %}
+<script src="http://localhost:4000/socket.io/socket.io.js"></script>
+{% endblock %}
+
+{%  block body %}
+
+
+    <form id="send" action="" method="post" enctype="multipart/form-data" style="margin-left: 25%;">
+        {% csrf_token %}
+        <div class="wrap-input1 validate-input" data-validate = "Receiver is required">
+            <input id="receiver" class="input1" type="text" name="receiver" placeholder="Receiver nickname">
+            <span class="shadow-input1"></span>
+        </div>
+
+        <div class="wrap-input1 validate-input" data-validate = "AES-Key is required">
+            <input class="input1" type="text" name="aes_key" placeholder="AES-Key">
+            <span class="shadow-input1"></span>
+        </div>
+
+        <div class="ecc_input validate-input" data-validate = "ECC-Public-Key is required" style="display: none">
+            <input id="ecc_public" class="input1" type="text" name="ecc_public" placeholder="ECC-Public-Key">
+            <span class="shadow-input1"></span>
+        </div>
+
+        <div class="wrap-input2 validate-input" data-validate = "File is required">
+            <input class="input2" type="file" name="file" placeholder="File">
+            <span class="shadow-input2"></span>
+        </div>
+
+        <div class="container-contact1-form-btn" style="display: none;">
+            <button class="contact1-form-btn">
+                <span>
+                    Send
+                </span>
+            </button>
+        </div>
+
+    </form>
+
+    <script>
+    var host = 'localhost';
+    var port = '4000';
+
+    var socket = io(host + ':' + port);
+    var receivers=[];
+    socket.on('getReceive', function(msgObject) {
+        if($("#receiver").val()==msgObject['receiver']){
+            $("#ecc_public").val(msgObject["ecc_public"]);
+            if ($("#ecc_public").val()) {
+                $(".container-contact1-form-btn").show();
+                $(".ecc_input").show();
+            }
+        }
+        receivers.push(msgObject);
+        console.log(receivers);
+    });
+
+    $("#receiver").change(function () {
+        receiver=$(this).val();
+        $.each(receivers,function (index,r) {
+            if(receiver==r['receiver']){
+                $("#ecc_public").val(r["ecc_public"]);
+                if ($("#ecc_public").val()) {
+                    $(".container-contact1-form-btn").show();
+                    $(".ecc_input").show();
+                }
+            }
+        })
+    })
+    $("#send").submit(function (e) {
+        {#e.preventDefault();#}
+        console.log($("#ecc_public").val());
+    })
+
+
+
+
+
+    </script>
+
+{% endblock %}
+
