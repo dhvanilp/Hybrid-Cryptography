@@ -1,0 +1,3 @@
+This is a sample text file. :)
+It contains 3 lines of data. :P
+This is the third line of data!
