@@ -25,7 +25,7 @@ def main():
     original_images = "test_files/original/"
     generated_images = "test_files/generated/"
 
-    with open('data.csv', 'w') as csvfile:
+    with open('video.csv', 'w') as csvfile:
         filewriter = csv.writer(csvfile, delimiter=',')
 
         filewriter.writerow(["original_file", "size_of_file", "loss_in_data","retain_data", "encrpyt_time", "decrypt_time"])
@@ -39,7 +39,7 @@ def main():
             statinfo = os.stat(image_path)
             size_of_file = statinfo[6]
             encrypt_time, decrypt_time = driver.encrypt_and_decrypt(image_path, output_path)
-            loss, correct = compareFile(image_path, output_path)
+            correct, loss  = compareFile(image_path, output_path)
 
             filewriter.writerow([filename, size_of_file, loss,
                                 correct, encrypt_time, decrypt_time])
