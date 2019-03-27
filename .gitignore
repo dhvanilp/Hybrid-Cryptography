@@ -2,6 +2,7 @@
 .vscode/
 venv/
 test_files/*
+.idea/
 
 # media files 
 *.png
@@ -11,3 +12,4 @@ test_files/*
 *.mp4
 *.avi
 .mp3
+

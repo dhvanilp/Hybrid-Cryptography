@@ -1,4 +1,5 @@
 import base64
+from PIL import Image
 
 
 def fileToBase64(filename):
@@ -31,3 +32,31 @@ def makeListFromString(longString):
         if len(item) > 0:
             retData.append(int(item))
     return retData
+
+
+def encodeStringinImage(data, output_file, type, width=512, height=512):
+    data = data.encode('utf-8')
+    print("This is lenght of the data in image:", len(data))
+    image_data = []
+    i = 0
+
+    for y in range(height):
+        for x in range(width):
+            if(i+2 < len(data)):
+                temp = (4*data[i], 2*data[i+1], 2*data[i+2])
+                i = i+3
+                image_data.append(temp)
+            else:
+                image_data.append((255, 255, 255))
+
+    # print(image_data)
+    img = Image.new('RGB',  (width, height))
+    img_data = img.load()
+
+    index = 0
+    for y in range(height):
+        for x in range(width):
+            img_data[x, y] = image_data[index]
+            index += 1
+
+    img.save(output_file, type)
