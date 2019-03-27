@@ -1,4 +1,4 @@
-original_file,size_of_file-Bytes,retain_data,loss_in_data,encrpyt_time-sec,decrypt_time-sec
+original_file,size_of_file,retain_data,loss_in_data,encrpyt_time,decrypt_time
 900-Men-in-Black-l.jpg,104772,100,0,16.293,38.498
 001 (36).jpg,121274,100,0,20.33,50.236
 1-1305251S305.jpg,108803,100,0,17.54,40.156
