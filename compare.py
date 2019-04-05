@@ -25,7 +25,7 @@ def main():
     original_images = "test_files/original/"
     generated_images = "test_files/generated/"
 
-    with open('video.csv', 'w') as csvfile:
+    with open('audio.csv', 'w') as csvfile:
         filewriter = csv.writer(csvfile, delimiter=',')
 
         filewriter.writerow(["original_file", "size_of_file", "loss_in_data","retain_data", "encrpyt_time", "decrypt_time"])
