@@ -10,9 +10,22 @@ The encryption process occurs as follows, and the decryption process is the reve
 ![Image](./encrypt.png)
 
 ## Enigma
-This is an apllication made using Django and NodeJs, that is bases on encryption and decryption process mentioned in the paper.
+This is an apllication made using Django and NodeJs, which is based on encryption and decryption process mentioned in the paper.
 
-Run the Enigma application in virtual environment and also run the node-js server
+### Run the Django application in virtual environment and also run the node.js server
+
+So this is what you need to do:
+* Open 2 browser tabs. 
+* Enter the sender and receiver nickname in each of the respective tabs.
+* Now work with the sender side first, click send
+* Enter the exact nickname of the receiver in the form.
+(The receivers public key should automatically show up, also the send button would show up. If not, then re run from step 1)  
+* Now work with the receiver side, click receive, enter the ecc private key of the receiver and click receive button.
+(It converts the private key to public key and sends the ecc public key of that receiver to the nodejs server)
+(The receivers public key should automatically show up on the sender's tab, also the send button would show up. If not, then re run from step 1)
+* Enter the AES private key, upload your file and send.
+
+The rest of the things will be handled by the servers. And the download link of the decrypted file will be available on the receiver side with appropriate alerts.
 
 ## Team Members
 * [Dhvanil Parikh](https://github.com/dhvanilp), 16IT217

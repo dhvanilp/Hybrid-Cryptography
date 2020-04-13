@@ -6,6 +6,7 @@
 	<title>{% block title %} {% endblock %}</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	{% comment %}
 <!--===============================================================================================-->
 	<link rel="icon" type="image/png" href='{% static "images/icons/favicon.ico" %}'/>
 <!--===============================================================================================-->
@@ -32,6 +33,10 @@
 <!--===============================================================================================-->
 	<script src='{% static "vendor/tilt/tilt.jquery.min.js" %}'></script>
 
+	
+	{% endcomment %}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     {% block extra-head %}
     {% endblock %}
 
@@ -48,6 +53,7 @@
 
 
 
+	{% comment %}
 
 	<script >
 		$('.js-tilt').tilt({
@@ -58,6 +64,7 @@
 
 <!--===============================================================================================-->
 	<script src='{% static "js/main.js" %}'></script>
+	{% endcomment %}
 
 </body>
 </html>

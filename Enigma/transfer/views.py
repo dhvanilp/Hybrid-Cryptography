@@ -111,14 +111,13 @@ def decryptFile(request):
         aes_obj = AES.AES(int(decryptedAESkey))
         decrypted_multimedia = aes_obj.decryptBigData(clean_data_list)
 
-        print(decrypted_multimedia)
 
         output_file = "transfer/downloads/" + file_name
         converter.base64ToFile(decrypted_multimedia, output_file)
         data={
             'file_name': file_name
         }
-        print(file_name)
+
         return HttpResponse(json.dumps({'file_name': file_name}), content_type="application/json")
 
 

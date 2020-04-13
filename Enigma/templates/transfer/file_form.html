@@ -20,6 +20,7 @@
             <span class="shadow-input1"></span>
         </div>
 
+
         <div class="ecc_input validate-input" data-validate = "ECC-Public-Key is required" style="display: none">
             <input id="ecc_public" class="input1" type="text" name="ecc_public" placeholder="ECC-Public-Key">
             <span class="shadow-input1"></span>
@@ -29,6 +30,7 @@
             <input class="input2" type="file" name="file" placeholder="File">
             <span class="shadow-input2"></span>
         </div>
+
 
         <div class="container-contact1-form-btn" style="display: none;">
             <button class="contact1-form-btn">
@@ -55,7 +57,6 @@
             }
         }
         receivers.push(msgObject);
-        console.log(receivers);
     });
 
     $("#receiver").change(function () {
