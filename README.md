@@ -12,9 +12,13 @@ The encryption process occurs as follows, and the decryption process is the reve
 ## Enigma
 This is an apllication made using Django and NodeJs, which is based on encryption and decryption process mentioned in the paper.
 
-### Run the Django application in virtual environment and also run the node.js server
+### Run the Django application in virtual environment inside Enigma directory
+`python manage.py runserver`
 
-So this is what you need to do:
+### Also run the node.js server from Enigma/nodejs
+`node index.js`
+
+### So this is what you need to do after both servers are live:
 * Open 2 browser tabs. 
 * Enter the sender and receiver nickname in each of the respective tabs.
 * Now work with the sender side first, click send
